@@ -1,0 +1,404 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CHNLvis</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/nv.d3.css">
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/queue.min.js"></script>
+	<script src="js/topojson.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/d3plus.min.js"></script>
+	<script src="js/d3.tip.js"></script>
+	<script src="js/d3.geo.js"></script>
+    <script src="js/nv.d3.js"></script>
+    <script src="js/nv.d3.js.map"></script>
+	<script src="js/smooth-scroll.js"></script>
+	<script src="js/player.min.js"></script>
+	<script src="js/liquidFillGauge.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/vis-line.js"></script>
+    <script src="js/vis-sac.js"></script>
+	<script src="js/sbc.js"></script>
+	<script src="js/sbc-timeline.js"></script>
+	<script src="js/sbc-gauges.js"></script>
+    <script src="js/sbc-setup.js"></script>
+    <script src="js/clicks.js"></script>
+	<script src="js/map.js"></script>
+</head>
+<body>
+<div class="navbar-xs">
+    <div class="navbar-primary">
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-8">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="nav-s1" class="navbar-brand" onclick="fire('#s1')">HOME</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-8">
+                <ul class="nav navbar-nav">
+                    <li><a id="nav-s2" onclick="fire('#s2')">Video</a></li>
+                    <li><a id="nav-s3" onclick="fire('#s3')">Intro</a></li>
+                    <li><a id="nav-s4" onclick="fire('#s4')">Timeline</a></li>
+                    <li><a id="nav-s5" onclick="fire('#s5')">Map</a></li>
+                    <li><a id="nav-s6" onclick="fire('#s6')">Regions</a></li>
+                    <li><a id="nav-s7" onclick="fire('#s7')">Casualties</a></li>
+                    <li><a id="nav-s8" onclick="fire('#s8')">Conclusion</a></li>
+                    <li><a id="nav-s9" onclick="fire('#s9')">About Us</a></li>
+                    <li><a id="nav-s10" onclick="fire('#s10')">Sources</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </nav>
+    </div>
+</div>
+<div class="loading">
+    <div class="title">
+        <h1>Violence on the Global Stage</h1>
+        <img src="img/up-arrow-black.png">
+        <p>loading</p>
+    </div>
+</div>
+<section id="s1" class="section">
+    <video id="title-video" autoplay loop poster="img/news-poster.jpg">
+        <source src="img/news.mp4" type="video/mp4"/>
+    </video>
+    <div class="title">
+        <h1>Violence on the Global Stage</h1>
+        <img src="img/up-arrow.png">
+        <p>start</p>
+    </div>
+</section>
+<section id="s2" class="section">
+    <div data-vimeo-url="https://vimeo.com/195129609" id="player"></div>
+    <div class="title">
+        <h1>What Have You Seen?</h1>
+        <img src="img/up-arrow-2.png">
+        <p>next</p>
+    </div>
+    <script>
+        var options = {
+            height: $(window).height(),
+            loop: false,
+            autoplay: false
+        };
+        var player = new Vimeo.Player('player', options);
+        player.on('timeupdate', function(data) {
+            if (data.seconds > 40) {
+                $(".title").find(":header").css("opacity", 1);
+                setTimeout(function() { $(".title").find("img, p").css("opacity", 1); }, 1000);
+            }
+        });
+    </script>
+</section>
+<section id="s3" class="section">
+    <div class="buffer">
+        <div class="row text-center inter">
+            <div class="col-md-12">
+                <h1>What Have You Seen?</h1>
+                <div class="p1">
+                    <h3>Media coverage of terrorism <span style="color: red">‘leads to further violence.’</span> - The Guardian</h3>
+                    <p>"Higher levels of exposure to news compounds the effect of <span style="color: red">[the public's] political positions.</span>--Misperceptions, Media, and The Iraq War," a study by the University of Maryland</p>
+                </div>
+                <div class="p2">
+                    <div class="line"></div>
+                    <h3>"Exposure to disproportionate news coverage is related to <span style="color: red">elevated levels of fear</span> and perceptions of personal risk" - DART center for Journalism and Trauma</h3>
+                    <p>While only 6% of crime in Great Britain is violent crime, a study of 10 popular British dailies showed that <span style="color: red">more than 2/3 of the crime news is devoted to violent crime </span> - DART center for Journalism and Trauma</p>
+                    </div>
+                <div class="p3">
+                    <div class="line"></div>
+                    <h3><span style="color: yellow">Let's take an objective look.</span></h3>
+                    <p>Media coverage of global violence has been on the rise over the last decade, leading much of the public to believe that the world is becoming less safe every year. However, <span style="color: red">data taken from the last two and a half decades reveals that this may not be the case.</span> The following visualizations attempt to shed light on the reality of violence on the global stage.</p>
+                </div>
+            </div>
+            <div class="prev-lg inline">
+                <img src="img/prev-large.png">
+                <div class="blinker">
+                    <img src="img/prev-large-glow.png">
+                </div>
+            </div>
+            <div class="next-lg inline">
+                <img src="img/next-large.png">
+                <div class="blinker">
+                    <img src="img/next-large-glow.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="q4" class="question">
+    <div class="title">
+        <h1>What's Happened?</h1>
+        <img src="img/up-arrow.png">
+        <br>
+    </div>
+    <p>Present-day U.S media coverage of global conflict most often covers the war on terror in the Middle East and other terrorist attacks, but many other significant global conflicts over the last two and half decades have been less prominently featured. The following is a compilation of some of the <span style="color: red">most significant events each year from 1989-2015</span> for background and context.</p>
+</div>
+<section id="s4" class="section">
+    <div id="linechart"></div>
+    <div class="prev-lg inline">
+        <img src="img/prev-large.png">
+        <div class="blinker">
+            <img src="img/prev-large-glow.png">
+        </div>
+    </div>
+    <div class="next-lg inline">
+        <img src="img/next-large.png">
+        <div class="blinker">
+            <img src="img/next-large-glow.png">
+        </div>
+    </div>
+</section>
+<div id="q5" class="question">
+    <div class="title">
+        <h1>Where in the World?</h1>
+        <img src="img/up-arrow.png">
+        <br>
+    </div>
+    <p>Although media coverage on conflicts and violence around the world has traditionally been very prominent, that <span style="color: red">most conflicts actually have less than 100 fatalities a month.</span> Traditionally, most severe conflicts have occurred in Africa, but the number of violent conflicts <span style="color: red">have not been increasing</span> over the last decade.</p>
+</div>
+<section id="s5" class="section">
+    <div class="buffer">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Where in the World?</h2>
+                <p>Use the play/pause button in order to see the conflicts added to the map. Zoom in and out to get a closer look at different regions of the world—<span style="color: red">each circle</span> corresponds with <span style="color: red">one conflict</span> in a specific month & year, and has a tooltip on mouseover with more details. Click&nbsp&nbsp&nbsp<i><span class="blinker" style="color: green; border: 1px solid green; padding: 2px 4px 2px 4px; border-radius: 1px;">Play</span></i>&nbsp&nbsp&nbspto begin.</p>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div>
+    <div class="zoom-buttons">
+        <div class="player text-center">
+            <button type="button" class="btn" data-zoom="+1">+</button>
+            <button type="button" class="btn" data-zoom="-1">-</button>
+        </div>
+    </div>
+    <div class="map-buttons">
+        <div class="player text-center">
+            <button type="button" class="btn" style="border: 2px solid green" id="play">Play</button>
+            <button type="button" class="btn" id="restart">Restart</button>
+        </div>
+    </div>
+    <div class="prev-lg inline">
+        <img src="img/prev-large.png">
+        <div class="blinker">
+            <img src="img/prev-large-glow.png">
+        </div>
+    </div>
+    <div class="next-lg inline">
+        <img src="img/next-large.png">
+        <div class="blinker">
+            <img src="img/next-large-glow.png">
+        </div>
+    </div>
+</section>
+<div id="q6" class="question">
+    <div class="title">
+        <h1>In Which Regions?</h1>
+        <img src="img/up-arrow.png">
+        <br>
+    </div>
+    <p>Although the majority of media coverage of global conflicts today center around the Middle East, the majority of conflict deaths have occurred in the <span style="color: red">African and Asian regions</span> of the world. 2013 marked a rise in Middle Eastern conflict deaths, and surpassed the number of African conflict deaths for the first time in 2015.</p>
+</div>
+<section id="s6" class="section">
+    <div class="buffer">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>In Which Regions?</h2>
+                <p>The three largest spikes in <span style="color: red">1990, 1994, and 1999-2000</span> correspond to <span style="color: red">the First Congo War, the Rwandan Genocide, and the Second Congo War </span>respectively.<br> Hover over the chart to view total number of conflict deaths by each region, and click on a region to expand the area chart to full-view. Compare two or more regions at a time by first clicking on one region and then adding others via the legend.</p>
+            </div>
+        </div>
+    </div>
+    <div id="stackedareachart"></div>
+    <div class="prev-lg inline">
+        <img src="img/prev-large.png">
+        <div class="blinker">
+            <img src="img/prev-large-glow.png">
+        </div>
+    </div>
+    <div class="next-lg inline">
+        <img src="img/next-large.png">
+        <div class="blinker">
+            <img src="img/next-large-glow.png">
+        </div>
+    </div>
+</section>
+<div id="q7" class="question">
+    <div class="title">
+        <h1>Who's Been Affected?</h1>
+        <img src="img/up-arrow.png">
+        <br>
+    </div>
+    <p>From tributes to U.S soliders killed in action to the iconic photos of Alan Kurdi, the drowned 3-year-old Syrian refugee, media coverage of the casualties of war heavily influences its viewers. This type of publicity uses many tactics, such as praising the bravery of soldiers to support government-endorsed wars, or portraying rebel fighters as extremists to dehumanize the enemy. <br>But in the end, <span style="color: red">civilians caught in the crossfire are those affected most.</span></p>
+</div>
+<section id="s7" class="section">
+    <div class="buffer">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Who's Been Affected?</h2>
+                <p>The following is a breakdown of all casualties by 4 different categories: <span style="color:#377eb8">"Side A"</span> (state government or perpetrating party), <span style="color:#984ea3">"Side B"</span> (rebel movement, rivalling government, or defending party), <span style="color:#4daf4a">"Unknown"</span> (deaths of unknown status), and <span style="color:#e41a1c">"Civilian."</span> Each coffin is relatively sized to the total number of deaths for each category from 1989 to 2015, and the blood filling the coffins reflects the number of deaths for a given time period. Use the brush tool on the bottom timeline to select a time period from 1-4 years, and the zoomed bar chart on the top-left and the coffins on the top-right will update for the specified time period <i>(note: the y-axis shifts relative to the data)</i>.</p>
+            </div>
+        </div>
+    </div>
+    <div id="gauges"></div>
+    <div id="timeline"></div>
+    <div id="stackedbarchart"></div>
+    <div class="prev-lg inline">
+        <img src="img/prev-large.png">
+        <div class="blinker">
+            <img src="img/prev-large-glow.png">
+        </div>
+    </div>
+    <div class="next-lg inline">
+        <img src="img/next-large.png">
+        <div class="blinker">
+            <img src="img/next-large-glow.png">
+        </div>
+    </div>
+</section>
+<section id="s8" class="section">
+    <div class="buffer">
+        <div class="row text-center inter">
+            <div class="col-md-12">
+                <h1>Conclusion</h1>
+                <div class="p1">
+                    <p>Although the perception that the world is becoming more violent is a prevalent one, the last decade has seen approximately 50% fewer fatalities than the decade before. According to Harvard professor Steven Pinker, <span style="color: yellow">"every form of violence, when measured objectively, [is] in decline"</span> [The Better Angels of Our Nature, Pinker 2011].</p>
+                </div>
+                <div class="p2">
+                    <p><span style="color: red">The Rwandan Genocide in 1994 accounts for almost half of the total civilian deaths</span> in all 27 years, and the First and Second Congo Wars caused millions of deaths both by conflict as well as famine and disease. Although 2013 to 2015 saw a rise in Middle Eastern conflict deaths, other world regions did not see a substantial increase in casualties. Overall, <span style="color: yellow">the total number of deaths remained relatively consistent over the last decade.</span></p>
+                </div>
+                <div class="p3">
+                    <p>With the increasing frequency of media sensationalism and still-growing influence of social media on our political views, it is important to find sources free of bias and subjectivity. At the end of the day, it is our own responsibility to evaluate the facts and come to our own conclusions.</p>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="prev-lg inline">
+                <img src="img/prev-large.png">
+                <div class="blinker">
+                    <img src="img/prev-large-glow.png">
+                </div>
+            </div>
+            <div class="next-lg inline">
+                <img src="img/next-large.png">
+                <div class="blinker">
+                    <img src="img/next-large-glow.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="s9" class="section">
+    <div class="buffer">
+        <div class="row text-center inter">
+            <div class="col-md-12">
+                <h1>About Us</h1>
+                <br>
+            </div>
+        </div>
+        <div class="row text-center inter">
+            <div class="col-md-6 headshot">
+                <img src="img/us/nathan.png">
+                <p>Nathan Lee '19</p>
+                <br><br>
+                <div class="bot">
+                    <img src="img/us/charlene.png">
+                    <p>Charlene Hwang '20</p>
+                </div>
+            </div>
+            <div class="row text-center inter">
+                <div class="col-md-6">
+                    <h3><i>Screencast Video</i></h3>
+                    <div data-vimeo-url="https://vimeo.com/195363644" id="player2"></div>
+                    <script>
+                        var options2 = {
+                            height: 300,
+                            loop: false,
+                            autoplay: false
+                        };
+                        var player2 = new Vimeo.Player('player2', options2);
+                    </script>
+                    <br>
+                    <h3 class="bot"><i><a href="#">Process Book</a></i></h3>
+                </div>
+            </div>
+            <div class="prev-lg inline">
+                <img src="img/prev-large.png">
+                <div class="blinker">
+                    <img src="img/prev-large-glow.png">
+                </div>
+            </div>
+            <div class="next-lg inline">
+                <img src="img/next-large.png">
+                <div class="blinker">
+                    <img src="img/next-large-glow.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="s10" class="section">
+    <div class="buffer">
+        <div class="row text-center inter">
+            <div class="col-md-12">
+                <h1>Sources and Credits</h1>
+                <p><strong><i>Video sources</i></strong></p>
+                <p>
+                    <a href="https://www.youtube.com/watch?v=1Tx0dXsZW2s">9/11 video</a><br>
+                    <a href="https://www.youtube.com/watch?v=1P0FiwWUl8E">Paris attacks video</a><br>
+                    <a href="https://www.youtube.com/watch?v=X0EFYK0sjCY">Boston bombings video</a><br>
+                    <a href="https://www.youtube.com/watch?v=guGnS9bfy9o">Ukraine attack video</a><br>
+                    <a href="https://www.youtube.com/watch?v=6KVHPR3mfG0">Gaza battles video</a><br>
+                    <a href="https://www.youtube.com/watch?v=MqRZ-_zRFsU">Assassination of a politician video</a><br>
+                    <a href="https://www.youtube.com/watch?v=93QTRR4l9VA">Black lives matter protest video</a><br>
+                    <a href="https://www.youtube.com/watch?v=nPpEpNk519U">Sandy hook shooting video</a><br>
+                    <a href="https://www.youtube.com/watch?v=ayguIkJiTgA">Orlando shooting video</a>
+                </p>
+                <br>
+                <p><strong><i>Quote sources</i></strong></p>
+                <p>
+                    <a href="https://www.theguardian.com/media/2015/aug/01/media-coverage-terrorism-further-violence">The Guardian</a><br>
+                    <a href="http://dartcenter.org/content/violence-comparing-reporting-and-reality">Dart Center for Journalism & Trauma</a><br>
+                    <a href="http://dartcenter.org/content/violence-comparing-reporting-and-reality">US Department of Veteran Affairs</a><br>
+                    <a href="http://www.pipa.org/OnlineReports/Iraq/IraqMedia_Oct03/IraqMedia_Oct03_rpt.pdf">Misperceptions, the media and the Iraq War</a>
+                </p>
+                <br>
+                <p><strong><i>DATA</i></strong></p>
+                <p>
+                    <a href="data/conflict_data_mod.csv">Croicu, Mihai and Ralph Sundberg, 2016, “UCDP GED Codebook version 5.0”, Department of
+                        Peace and Conflict Research, Uppsala University</a><br>
+                    <a href="data/conflict_explanation.pdf">[data explanation]</a><br>
+                </p>
+                <br>
+                <p><strong><i>special thanks to:</i></strong></p>
+                <p>Alain, for all of the helpful feedback and inspiration<br>
+                    Hendrick, for help and guidance with the map visualization</p>
+            </div>
+            <div class="prev-lg inline">
+                <img src="img/prev-large.png">
+                <div class="blinker">
+                    <img src="img/prev-large-glow.png">
+                </div>
+            </div>
+            <div class="next-lg inline">
+                <img src="img/next-large.png">
+                <div class="blinker">
+                    <img src="img/next-large-glow.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
